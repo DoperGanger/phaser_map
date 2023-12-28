@@ -11,6 +11,10 @@ export const CHARACTER_ASSET_KEYS = Object.freeze({
   NPC: "NPC",
 });
 
+export const DATA_ASSET_KEYS = Object.freeze({
+  ANIMATIONS: "ANIMATIONS",
+});
+
 //   export const TITLE_ASSET_KEYS = Object.freeze({
 //     BACKGROUND: 'BACKGROUND',
 //     TITLE: 'TITLE',

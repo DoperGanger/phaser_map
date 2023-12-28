@@ -1,18 +1,39 @@
 import { CHARACTER_ASSET_KEYS } from "~/assets/asset-keys";
 import { Character } from "./character";
+import { DIRECTION } from "../../../common/direction";
+import { exhaustiveGuard } from "../../../utils/guard";
 
-/**
- * @typedef {Omit<import('./character').CharacterConfig,'assetKey'>} PlayerConfig
- */
 export class Player extends Character {
-  /**
-   * @param {PlayerConfig}config
-   */
   constructor(config: any) {
     super({
       ...config,
       assetKey: CHARACTER_ASSET_KEYS.PLAYER,
+      origin: { x: -0.05, y: 0 },
       assetFrame: 7,
     });
+  }
+
+  moveCharacter(direction) {
+    super.moveCharacter(direction);
+
+    switch (this._direction) {
+      case DIRECTION.DOWN:
+      case DIRECTION.LEFT:
+      case DIRECTION.RIGHT:
+      case DIRECTION.UP:
+        if (
+          !this._phaserGameObject.anims.isPlaying ||
+          this._phaserGameObject.anims.currentAnim?.key !==
+            `PLAYER_${this._direction}`
+        ) {
+          this._phaserGameObject.play(`PLAYER_${this._direction}`);
+        }
+        break;
+      case DIRECTION.NONE:
+        break;
+      default:
+        // We should never reach this default case
+        exhaustiveGuard(this._direction);
+    }
   }
 }

@@ -2,13 +2,13 @@ import { DIRECTION } from "../../../common/direction";
 import { getTargetPositionFromGameObjectPositionAndDirection } from "../../../utils/grid-utils";
 
 export class Character {
-  private _scene: Phaser.Scene;
-  private _phaserGameObject: Phaser.GameObjects.Sprite;
-  private _direction: DIRECTION;
-  private _isMoving: boolean;
-  private _targetPosition;
-  private _previousTargetPosition;
-  private _spriteGridMovementFinishedCallback: (() => void) | undefined;
+  protected _scene: Phaser.Scene;
+  protected _phaserGameObject: Phaser.GameObjects.Sprite;
+  protected _direction: DIRECTION;
+  protected _isMoving: boolean;
+  protected _targetPosition;
+  protected _previousTargetPosition;
+  protected _spriteGridMovementFinishedCallback: (() => void) | undefined;
 
   constructor(config: any) {
     console.log(`[${Character.name}:create] invoked`);
@@ -18,11 +18,17 @@ export class Character {
     this._isMoving = false;
     this._targetPosition = { ...config.position };
     this._previousTargetPosition = { ...config.position };
+
     this._spriteGridMovementFinishedCallback =
       config.spriteGridMovementFinishedCallback;
 
     this._phaserGameObject = this._scene.add
-      .sprite(config.position.x, config.position.y, config.assetKey)
+      .sprite(
+        config.position.x,
+        config.position.y,
+        config.assetKey,
+        config.assetFrame || 0
+      )
       .setOrigin(config.origin?.x || 0, config.origin?.y || 0)
       .setScale(config.scale || 1);
   }
@@ -39,19 +45,22 @@ export class Character {
     if (this._isMoving) {
       return;
     }
-    this._moveSprite(direction);
+    this.moveSprite(direction);
   }
 
-  private _moveSprite(direction: DIRECTION): void {
+  protected moveSprite(direction: DIRECTION): void {
     this._direction = direction;
-    if (this._isBlockingTile()) {
+    if (this.isBlockingTile()) {
       return;
     }
     this._isMoving = true;
     this.handleSpriteMovement();
   }
 
-  private _isBlockingTile(): boolean {
+  protected isBlockingTile() {
+    if (this._direction === DIRECTION.NONE) {
+      return;
+    }
     // Implementation of tile blocking logic
     return false;
   }
