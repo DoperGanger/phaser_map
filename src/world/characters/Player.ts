@@ -8,8 +8,14 @@ export class Player extends Character {
     super({
       ...config,
       assetKey: CHARACTER_ASSET_KEYS.PLAYER,
-      origin: { x: -0.05, y: 0 },
-      assetFrame: 7,
+      origin: { x: -0.2, y: 0.022 },
+      idleFrameConfig: {
+        DOWN: 7,
+        LEFT: 10,
+        UP: 1,
+        RIGHT: 4,
+        NONE: 7,
+      },
     });
   }
 

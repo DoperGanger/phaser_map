@@ -4,7 +4,7 @@ import { SCENE_KEYS } from "./scenes/scene-keys";
 import { WorldScene } from "./scenes/world-scene";
 import { PreloadScene } from "./scenes/preload-scene";
 
-const game = new Phaser.Game({
+new Phaser.Game({
   type: Phaser.CANVAS,
   pixelArt: false,
   scale: {
